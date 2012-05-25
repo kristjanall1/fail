@@ -3,13 +3,13 @@
 #include<conio.h>
 /*
 Kristjan All
-01.04.2012
-versiooon: 1.2
+17.05.2012
+Muudetud:25.05.2012
 */
 main()
 {
     char ch, failinimi[20], funktsioon, text[21] ="", liida1[20], liida2[20], liida3[20]; //muutujate deklareerimine
-    int j='y', kustuta;
+    int  kustuta, j;
     FILE *fail, *fail1, *fail2;
     while(j)
     {
@@ -17,29 +17,29 @@ main()
         printf("*   1. kirjutada        *\n");
         printf("*   2. kustutada        *\n");
         printf("*   3. liida 2 faili    *\n");
-        printf("*   4. lugeda           *\n"); //võimaluste kirjeldamine
-        funktsioon = getchar();
+        printf("*   4. lugeda           *\n");
+        printf("*   5. exit             *\n");//võimaluste kirjeldamine kasutajale
+        funktsioon = getchar();// kasutaja sisestab oma valiku
         getchar();
         printf("\n");
         switch(funktsioon){ //moodulid
             case '1':; //Faili kirjutamise moodul
 
                 printf("Sisesta faili nimi \n");
-                gets(failinimi);
+                gets(failinimi);// kasutaja sisestab failinime
 
-                fail = fopen(failinimi,"a+"); //avab faili
-                printf("Mida tadad faili lisada?\n");
+                fail = fopen(failinimi,"a+"); //avab faili kirjutamiseks
+                printf("Mida tahad faili lisada?\n");
                 scanf("%20s",text); //text mida lisatakse faili //kui faili polnud olemas siis luuakse uus fail ja kirjutatakse sinna.
                 fprintf(fail,"\n%s",text); // kirjutab faili
                 fclose(fail); // sulgeb faili
-                return 0;
 
             break;
 
             case '2':; //Faili kustutamise moodul
 
                 printf("Sisesta faili nimi\n");
-                gets(failinimi);
+                gets(failinimi);//kasutaja sisestab failinime
 
                 kustuta = remove(failinimi);//Faili kustutamine
 
@@ -49,37 +49,36 @@ main()
                 {
                     perror("Faili kustutamisel esines tõrge"); //veateade
                 }
-                return 0;
 
             break;
 
             case '3':;
 
                 printf("Sisesta esimese faili nimi ");
-                gets(liida1);
+                gets(liida1);//kasutaja sisestab esimese faili nime
 
                 printf("Sisesta teise faili nimi ");
-                gets(liida2);
+                gets(liida2);// kasutaja sisestab teise faili nime
 
                 printf("Sisesta loodava faili nimi ");
-                gets(liida3);
+                gets(liida3); // kasutaja seisestab faili nime kuhu kaks eelmist sisestatakse
 
-                fail1 = fopen(liida1,"r");
-                fail2 = fopen(liida2,"r");
+                fail1 = fopen(liida1,"r");//programm avab esimese faili lugemiseks
+                fail2 = fopen(liida2,"r");//programm avab teise faili lugemiseks
 
                 if( fail1 == NULL || fail2 == NULL ) //failide kontroll
                 {
-                    perror("Esines viga failide avamisel ");
+                    perror("Esines viga failide avamisel ");//veateade kui ühte neist pole olemas
                     exit(EXIT_FAILURE);
                 }
 
                 fail = fopen(liida3,"w"); //avab kolmanda faili //kui pole olemas siis loob uue
 
-                while( ( ch = fgetc(fail1) ) != EOF ) //loeb ja kirjutab esimese faili sisu kolmandasse
-                    fputc(ch,fail);
+                while( ( ch = fgetc(fail1) ) != EOF ) //loeb esimese faili sisu
+                    fputc(ch,fail);// kirjutab esimese faili sisu kolmandasse
 
-                while( ( ch = fgetc(fail2) ) != EOF ) //loeb ja kirjutab teise faili sisu kolmandasse
-                    fputc(ch,fail);
+                while( ( ch = fgetc(fail2) ) != EOF ) //loeb teise faili sisu
+                    fputc(ch,fail);// kirjutab teise faili sisu kolmandasse
 
                 printf("Kaks faili on edukalt liidetud.\n");
 
@@ -88,31 +87,35 @@ main()
                 fclose(fail);
 
                 getch();
-                return 0;
 
             break;
 
             case '4':;
 
                 printf("Sisesta faili nimi ");
-                gets(failinimi);
+                gets(failinimi);//kasutaja sisestab failinime
 
-                fail = fopen(failinimi,"r");
+                fail = fopen(failinimi,"r");// avab faili lugemiseks
 
-                if( fail == NULL )
+                if( fail == NULL )//kontrollib kas fail on olemas
                 {
-                    perror("Faili avamisel ilmnes viga.\n");
+                    perror("Faili avamisel ilmnes viga.\n");//annab teada et esines viga
                     exit(EXIT_FAILURE);
                 }
 
                 printf("Faili %s sisu on :  \n\n", failinimi);
 
-                while( ( ch = fgetc(fail) ) != EOF )
-                printf("%c",ch);
+                while( ( ch = fgetc(fail) ) != EOF )//loeb faili sisu kuni faili lõpuni
+                printf("%c",ch);//kirjutab faili sisu ekraanile
                 printf(" \n");
 
-                fclose(fail);
-                return 0;
+                fclose(fail);//sulgeb faili
+
+            break;
+
+            case '5':;
+
+            return 0;//lõpetab programmi
 
             break;
         }
